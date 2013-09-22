@@ -8,5 +8,5 @@ setup(
     description="A 2-3 finger tree library for Python",
     author="Alexander Boyd",
     author_email="alex@opengroove.org",
-    modules=["ttftree"]
+    py_modules=["ttftree"]
 )
