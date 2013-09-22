@@ -1,6 +1,4 @@
 from setuptools import setup
-from subprocess import Popen, PIPE
-from time import gmtime, strftime
 
 setup(
     name="ttftree",
