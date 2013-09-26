@@ -244,6 +244,7 @@ MEASURE_ITEM_COUNT = MeasureItemCount()
 
 
 class Node(Sequence):
+    __slots__ = ["_values", "measure", "annotation"]
     def __init__(self, measure, *values):
         if len(values) not in (2, 3):
             raise Exception("Nodes must have 2 or 3 children")
@@ -268,6 +269,7 @@ class Node(Sequence):
 
 
 class Digit(Sequence):
+    __slots__ = ["_values", "measure", "annotation"]
     def __init__(self, measure, *values):
         if len(values) not in (1, 2, 3, 4):
             raise Exception("Digits must have 1, 2, 3, or 4 children; the "
