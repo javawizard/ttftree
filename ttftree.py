@@ -311,6 +311,15 @@ class Digit(Sequence):
         return "<Digit: %s>" % ", ".join([repr(v) for v in self])
 
 
+# Note: We have a __slots__ on Node and Digit to reduce their memory footprint,
+# but adding __slots__ to Tree and its subclasses would be premature
+# optimization: a 2-3 finger tree containing n values will have at most
+# log2(n) instances of any of Tree's subclasses, so we'll get little benefit
+# in the long run.
+# 
+# I might, however, consider adding __slots__ for the sake of applications
+# where lots of little trees are used.
+
 class Tree(object):
     """
     A class representing a 2-3 finger tree.
