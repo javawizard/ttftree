@@ -219,15 +219,27 @@ class CompoundMeasure(Measure):
     their computed values. It can be used to annotate a tree with multiple
     measures at the same time.
     """
-    def __init__(self, *measures):
+    def __init__(self, *measures, **kwargs):
+        """
+        Creates a measure that combines the specified measures.
+        
+        One keyword argument, tuple_class, can be present. It specifies a
+        subclass of tuple to use to combine the measures' computed values. This
+        is primarily intended to allow named tuples (classes returned from
+        collections.namedtuple) to be used instead of plain vanilla tuples.
+        """
         self.measures = measures
-        self.identity = tuple(m.identity for m in self.measures)
+        if "tuple_class" in kwargs:
+            self.tuple_class = kwargs["tuple_class"]
+        else:
+            self.tuple_class = tuple
+        self.identity = self.tuple_class(m.identity for m in self.measures)
     
     def convert(self, value):
-        return tuple(m.convert(value) for m in self.measures)
+        return self.tuple_class(m.convert(value) for m in self.measures)
     
     def operator(self, a_values, b_values):
-        return tuple(m.operator(a, b) for (m, a, b) in zip(self.measures, a_values, b_values))
+        return self.tuple_class(m.operator(a, b) for (m, a, b) in zip(self.measures, a_values, b_values))
 
 
 class _NodeMeasure(Measure):
