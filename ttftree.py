@@ -230,16 +230,27 @@ class CompoundMeasure(Measure):
         """
         self.measures = measures
         if "tuple_class" in kwargs:
-            self.tuple_class = kwargs["tuple_class"]
+            tuple_class = kwargs["tuple_class"]
+            # Unlike normal tuples, named tuples don't allow passing a single
+            # sequence argument into their constructor; they provide _make for
+            # this purpose. We'll want to store the tuple class's _make, then,
+            # instead of the class itself.
+            if hasattr(tuple_class, "_make"):
+                self._make_tuple = tuple_class._make
+            # If it doesn't have a _make, we assume that it's a custom subclass
+            # of tuple, and that it should be smart enough to accept a single
+            # sequence parameter.
+            else:
+                self._make_tuple = tuple_class
         else:
-            self.tuple_class = tuple
-        self.identity = self.tuple_class(m.identity for m in self.measures)
+            self._make_tuple = tuple
+        self.identity = self._make_tuple(m.identity for m in self.measures)
     
     def convert(self, value):
-        return self.tuple_class(m.convert(value) for m in self.measures)
+        return self._make_tuple(m.convert(value) for m in self.measures)
     
     def operator(self, a_values, b_values):
-        return self.tuple_class(m.operator(a, b) for (m, a, b) in zip(self.measures, a_values, b_values))
+        return self._make_tuple(m.operator(a, b) for (m, a, b) in zip(self.measures, a_values, b_values))
 
 
 class _NodeMeasure(Measure):
