@@ -1,12 +1,9 @@
 """
-Experimental implementation of functional 2-3 finger trees that I'm working on.
+An implementation of functional 2-3 finger trees.
 
-I'm hoping to replace stm.avl with these, which'll give O(1) list insertion,
-appending, and removal from either end to stm.tlist.TList.
+This module provides an implementation of 2-3 finger trees for Python.
 
-I'm also planning on implementing custom measures (which could also be done
-with stm.avl), which'll give the ability for, e.g., an ordered list to also
-function as a priority queue.
+More documentation will be provided soon.
 """
 
 # Credit goes to http://maniagnosis.crsr.net/2010/11/finger-trees.html for
